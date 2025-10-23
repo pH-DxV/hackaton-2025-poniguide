@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <title>Meus Relatórios - PoniGuide</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <div class="header">
+             <a href="index.html" class="btn-back-home" title="Voltar para o Início">
+                <span>🏠</span> Início
+            </a>
+            <h2>Meus Sistemas</h2>
+        </div>
+
+        <div class="main-content">
+            <h1>Relatórios</h1>
+
+            <p class="intro-message">Aqui estão todos os sistemas de aquaponia que você cadastrou. Clique em um sistema para gerar o relatório de desempenho e otimização.</p>
+
+            <div id="systems-list" class="systems-list">
+                <div class="loading-message">
+                    Carregando seus sistemas...
+                </div>
+            </div>
+
+            <div id="report-detail-card" class="card report-detail-card" style="display: none;">
+                <h3 id="report-title" class="section-title">Relatório de Desempenho</h3>
+                <p id="report-date" class="report-date"></p>
+
+                <div id="report-metrics">
+                    <div class="metric-group">
+                        <h4 class="metric-title">Dimensionamento de Equilíbrio</h4>
+                        <div class="result-item">
+                            <span class="result-label">Peso Final Desejado (Total em Kg)</span>
+                            <span class="result-value" id="res-peso-final">0.0 kg</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Qtd. Máxima de Peixes (Unidades)</span>
+                            <span class="result-value" id="res-peixes">0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Peso Final Total por Peixes (Unidades)</span>
+                            <span class="result-value" id="res-peso-inicial">0.0 kg</span>
+                        </div>
+                    </div>
+
+                    </div>
+
+                <h4 class="metric-title" style="margin-top: 20px;">Sugestões de Otimização</h4>
+                <ul id="suggestions-list" class="suggestions-list">
+                </ul>
+
+                <div class="report-actions">
+                    <button class="btn-primary btn-edit-system" onclick="openEditModal()">✏️ Editar Dados do Sistema</button>
+
+                    <button class="btn-primary btn-update" style="margin-top: 10px; background-color: var(--cor-secundaria);" onclick="goToCalculator()">Usar Calculadora para Simular</button> </div>
+            </div>
+
+            <div id="feedback-message" class="feedback-message" style="display: none;"></div>
+        </div>
+    </div>
+
+    <div id="edit-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeEditModal()">&times;</span>
+            <h3 class="section-title">Editar Sistema <span id="modal-system-id"></span></h3>
+            <form id="edit-system-form">
+                <input type="hidden" id="edit-system-id">
+                <div class="input-group">
+                    <label for="edit-nome">Nome do Sistema</label>
+                    <input type="text" id="edit-nome" required>
+                </div>
+                <div class="input-group">
+                    <label for="edit-volume">Volume do Tanque (Litros)</label>
+                    <input type="number" id="edit-volume" required step="0.1">
+                </div>
+                <div class="input-group">
+                    <label for="edit-area">Área do Canteiro (m²)</label>
+                    <input type="number" id="edit-area" required step="0.1">
+                </div>
+                <div class="input-group">
+                    <label for="edit-peso-abate">Peso de Abate por Peixe (Kg)</label>
+                    <input type="number" id="edit-peso-abate" placeholder="Ex: 2.5" required step="0.1">
+                </div>
+                <div class="error-message" id="modal-error-message"></div>
+                <button type="submit" class="btn-primary btn-save-modal">SALVAR ALTERAÇÕES</button> </form>
+        </div>
+    </div>
+
+    <script src="relatorios.js"></script>
+</body>
+</html>

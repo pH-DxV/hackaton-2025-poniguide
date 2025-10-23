@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora - PoniGuide</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <div class="header">
+            <a href="index.html" class="btn-back-home" title="Voltar para o Início">
+                <span>🏠</span> Início
+            </a>
+            <h2>Calculadora de Equilíbrio</h2>
+        </div>
+
+        <div class="main-content">
+            <h1>Calculadora de Dimensionamento</h1>
+
+            <div class="card" id="input-card">
+                <p class="alert-message">Preencha o <strong>Peso de Abate (Obrigatório)</strong> e *pelo menos um* dos três campos de sistema (Volume, Peso Total, Área).</p>
+
+                <div class="input-group">
+                    <label for="peso-abate">Peso de Abate por Peixe (Kg)</label>
+                    <input type="number" id="peso-abate" placeholder="Ex: 2.5 (Obrigatório)" step="0.1">
+                </div>
+
+                <hr style="border: 0; border-top: 1px dashed #ccc; margin: 20px 0;">
+
+                <div class="input-group">
+                    <label for="volume">Volume do Tanque (Litros)</label>
+                    <input type="number" id="volume" placeholder="Ex: 1000" step="0.1">
+                </div>
+                <div class="input-group">
+                    <label for="peso-final">Peso Vivo Final Desejado (Total em Kg)</label>
+                    <input type="number" id="peso-final" placeholder="Ex: 20" step="0.1">
+                </div>
+                <div class="input-group">
+                    <label for="area-plantio-input">Área de Plantio (m²)</label>
+                    <input type="number" id="area-plantio-input" placeholder="Ex: 5" step="0.1">
+                </div>
+
+                <div class="input-group">
+                    <label for="ph-input">Nível de pH (Opcional)</label>
+                    <input type="number" id="ph-input" placeholder="Ex: 6.8 (Para análise)" step="0.1">
+                </div>
+
+                <button class="btn-calculate" id="btn-calcular">CALCULAR DIMENSIONAMENTO</button>
+                <div class="error-message" id="error-message"></div>
+            </div>
+
+            <div class="card" id="results-card" style="display: none;">
+                <h3 class="section-title">Resultados do Equilíbrio Biológico</h3>
+
+                <div class="result-item">
+                    <span class="result-label">Qtd. Máxima de Peixes (Unidades)</span>
+                    <span class="result-value" id="res-peixes">0</span>
+                </div>
+
+                <div class="result-item">
+                    <span class="result-label">Peso Inicial Total (Alevinos)</span>
+                    <span class="result-value" id="res-peso-inicial">0.0 kg</span>
+                </div>
+
+                <div class="result-item">
+                    <span class="result-label">Volume de Água Mínimo (Litros)</span>
+                    <span class="result-value" id="res-volume">0 L</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Área de Plantio Sugerida (m²)</span>
+                    <span class="result-value" id="res-plantio">0.0 m²</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Peso Final Desejado (Total em Kg)</span>
+                    <span class="result-value" id="res-peso-final">0.0 kg</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Ração Diária Necessária (Kg)</span>
+                    <span class="result-value" id="res-racao-kg">0.0 kg</span>
+                </div>
+
+                <div class="result-item">
+                    <span class="result-label">Custo Médio Diário Estimado (R$)</span>
+                    <span class="result-value" id="res-custo">R$ 0.00</span>
+                </div>
+
+                <div class="result-item" id="res-ph-container" style="display: none;">
+                    <span class="result-label">Status do pH</span>
+                    <span class="result-value" id="res-ph-status">N/A</span>
+                </div>
+
+                <div class="alert-message" id="results-alert-message">
+                    </div>
+
+                <h3 class="section-title" style="margin-top: 20px;">Distribuição de Equilíbrio</h3>
+                <div class="chart-container" style="position: relative; height:200px; width:100%;">
+                    <canvas id="balanceChart"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="section-title">Dados de Referência (Tilápia/Alface)</h3>
+                <div class="reference-item">
+                    <span class="reference-label">Tipo de Cultura/Filtro:</span>
+                    <span class="reference-value"><strong>Alface</strong> (em Raft/DWC) / Biofiltro (Mídia Plástica/Argila)</span>
+                </div>
+                <div class="reference-item">
+                    <span class="reference-label">Densidade de Estocagem (Tilápia):</span>
+                    <span class="reference-value"><strong>20 kg de peixe</strong> para cada <strong>1.000 L</strong> de água</span>
+                </div>
+                <div class="reference-item">
+                    <span class="reference-label">Proporção Volume/Área:</span>
+                    <span class="reference-value"><strong>200 L de água</strong> para cada <strong>1 m²</strong> de plantio</span>
+                </div>
+                <div class="reference-item">
+                    <span class="reference-label">Peso Mínimo de Inserção (Alevino):</span>
+                    <span class="reference-value"><strong>0.5 kg (500g)</strong> (Recomendado)</span>
+                </div>
+                <div class="reference-item">
+                    <span class="reference-label">Constituição da Ração:</span>
+                    <span class="reference-value">32–38% Proteína, Lipídios, Fibras, Vitaminas</span>
+                </div>
+                <div class="reference-item">
+                    <span class="reference-label">Qtd. de Ração/Dia (Fator Tilápia):</span>
+                    <span class="reference-value">1–2% do peso vivo total (Usamos 1.5% para média)</span>
+                </div>
+                <div class="reference-item">
+                    <span class="reference-label">Custo Médio da Ração (Kg):</span>
+                    <span class="reference-value">R$ 4–6 / kg (Usamos R$ 5,00/kg para média)</span>
+                </div>
+            </div>
+            <button id="btn-salvar" class="btn-calculate btn-salvar">Salvar Sistema para Relatórios</button>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    <script src="calculadora.js"></script>
+</body>
+</html>
